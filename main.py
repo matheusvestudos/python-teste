@@ -1,8 +1,20 @@
-def main(name: str, age: int) -> str:
-  return f"Hello {name} | you are {age} age | teste"
+# Primeiro, importe as bibliotecas padrão
+from typing import Union
 
-result = main("Matheus", 20)
+# Depois, importe as bibliotecas de terceiros
+import uvicorn
+from fastapi import FastAPI
 
-result_teste = result.split('|')
+# Código da aplicação
+app = FastAPI()
 
-print(result_teste[2])
+@app.get("/")
+def read_root():
+    return {"Hello": "World"}
+
+@app.get("/items/{item_id}")
+def read_item(item_id: int, q: Union[str, None] = None):
+    return {"item_id": item_id, "q": q}
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=3000)
